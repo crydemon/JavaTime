@@ -1,0 +1,17 @@
+.idea
+out
+project
+spark-warehouse
+target
+model
+output
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+.settings
+.classpath
+.project
+.cache-main
+.cache-tests
+/bin/
