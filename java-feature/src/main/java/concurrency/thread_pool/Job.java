@@ -5,7 +5,7 @@ public class Job implements Runnable{
     @Override
     public void run() {
         try {
-            Thread.sleep(2500);
+            Thread.sleep(5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

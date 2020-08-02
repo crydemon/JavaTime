@@ -5,7 +5,7 @@ public class ThreadLocal {
 
 
 /**
- * ThreadLocal 并不解决线程间共享数据的问题
+ * ThreadLocal 并不解决线程间共享数据的问题，只解决线程数据隔离的问题
  * ThreadLocal 通过隐式的在不同线程内创建独立实例副本避免了实例线程安全的问题
  * 每个线程持有一个 Map 并维护了 ThreadLocal 对象与具体实例的映射，该 Map 由于只被持有它的线程访问，故不存在线程安全以及锁的问题
  * ThreadLocalMap 的 Entry 对 ThreadLocal 的引用为弱引用，避免了 ThreadLocal 对象无法被回收的问题
