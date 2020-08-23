@@ -23,12 +23,14 @@ public class ChatServer {
 
   private final ChannelGroup channelGroup = new DefaultChannelGroup(
       ImmediateEventExecutor.INSTANCE);
-  private final EventLoopGroup group = new NioEventLoopGroup();
+  private final EventLoopGroup bossLoopGroup = new NioEventLoopGroup(1);
+  private final EventLoopGroup workerLoopGroup = new NioEventLoopGroup(2);
   private Channel channel;
 
   public ChannelFuture start(InetSocketAddress address) {
+    System.out.println("start");
     ServerBootstrap bootstrap = new ServerBootstrap();
-    bootstrap.group(group)
+    bootstrap.group(bossLoopGroup, workerLoopGroup)
         .channel(NioServerSocketChannel.class)
         .childHandler(createInitializer(channelGroup));
     ChannelFuture future = bootstrap.bind(address);
@@ -38,15 +40,17 @@ public class ChatServer {
   }
 
   protected ChannelInitializer<Channel> createInitializer(ChannelGroup group) {
+    System.out.println("createInitializer");
     return new ChatServerInitializer(group);
   }
 
   public void destroy() {
-    if (channel == null) {
+    if (channel != null) {
       channel.close();
     }
     channelGroup.close();
-    group.shutdownGracefully();
+    workerLoopGroup.shutdownGracefully();
+    bossLoopGroup.shutdownGracefully();
   }
 
   public static void main(String[] args) {

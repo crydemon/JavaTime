@@ -27,7 +27,7 @@ public class MySQLDemo {
   private static String getData() {
     final boolean useLetters = true;
     final boolean useNumbers = false;
-    String name = RandomStringUtils.random(10, useLetters, useNumbers);
+    String name = "wangqqqqq";
     int age = random.nextInt();
     String birth = RandomStringUtils.random(10, useLetters, useNumbers);
     String base = RandomStringUtils.random(3, useLetters, useNumbers);
@@ -86,35 +86,5 @@ public class MySQLDemo {
       }
     }
     System.out.println("Goodbye!");
-  }
-}
-
-class Main {
-
-  public static String helper(String s1) {
-    // s2 始终存上一个字符
-    String s2 = "" + s1.charAt(0);
-    int count = 1;
-    for (int i = 1; i < s1.length(); i++) {
-      int len = s2.length();
-      if (s1.charAt(i) == s2.charAt(len - 1)) {
-        count++;
-      } else if (s1.charAt(i) != s2.charAt(len - 1)) {
-        if (count > 1) {
-          s2 = s2 + count + s1.charAt(i);
-        } else {
-          s2 = s2 + s1.charAt(i);
-        }
-        count = 1;
-      }
-    }
-    if (count > 1) {
-      s2 = s2 + count;
-    }
-    return s2;
-  }
-
-  public static void main(String[] args) {
-    System.out.println(helper("aaaaaaaaaaabnbbbbbbbbbbbb"));
   }
 }

@@ -122,6 +122,7 @@ class SessionHandlerUseThreadLocal {
 
 
     public static void main(String[] args) {
+
         new Thread(() -> {
             SessionHandlerUseThreadLocal handler = new SessionHandlerUseThreadLocal();
             handler.getStatus();

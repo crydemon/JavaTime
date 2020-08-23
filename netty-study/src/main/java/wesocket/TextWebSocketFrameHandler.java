@@ -4,7 +4,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler.ServerHandshakeStateEvent;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 
 /**
  * @ClassName TextWebSocketFrameHandler
@@ -23,9 +23,12 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
   @Override
   public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-    if (evt == ServerHandshakeStateEvent.HANDSHAKE_COMPLETE) {
+    System.out.println("-------------------");
+    if (evt instanceof WebSocketServerProtocolHandler.HandshakeComplete) {
+      System.out.println(evt.getClass());
       ctx.pipeline().remove(HttpRequestHandler.class);
-      group.writeAndFlush(new TextWebSocketFrame("Client" + ctx.channel() + "joined"));
+      ctx.writeAndFlush(new TextWebSocketFrame(
+          "Client " + ctx.channel() + " joined"));
       group.add(ctx.channel());
     } else {
       super.userEventTriggered(ctx, evt);
@@ -34,6 +37,6 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
-    group.writeAndFlush(msg.retain());
+    ctx.writeAndFlush(msg.retain());
   }
 }

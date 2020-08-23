@@ -26,7 +26,7 @@ public class ChatServerInitializer extends ChannelInitializer<Channel> {
 
   @Override
   protected void initChannel(Channel ch) throws Exception {
-    System.out.println("ok");
+    System.out.println(Thread.currentThread().getName());
     ChannelPipeline pipeline = ch.pipeline();
     pipeline.addLast(new HttpServerCodec());
     pipeline.addLast(new ChunkedWriteHandler());
