@@ -3,13 +3,10 @@ package bio;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -40,25 +37,26 @@ public class BIOServer {
             new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
         BufferedReader br = new BufferedReader(
             new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-
-        char[] buffer = new char[1024];
-        StringBuilder content = new StringBuilder();
-        int i;
-        while ((i = br.read(buffer)) != -1) {
-          content.append(buffer, 0, i);
-          if (content.toString().contains("end")) {
-            break;
+        while (socket.isConnected()) {
+          char[] buffer = new char[1024];
+          StringBuilder content = new StringBuilder();
+          int i;
+          while ((i = br.read(buffer)) != -1) {
+            content.append(buffer, 0, i);
+            if (content.toString().contains("end")) {
+              break;
+            }
           }
+          System.out.println(content);
+          bw.write("fuck you\n");
+          bw.flush();
         }
-        System.out.println(content);
-        bw.write("fuck you");
-        bw.flush();
-        bw.close();
         br.close();
+        bw.close();
+        socket.close();
       } catch (IOException e) {
         e.printStackTrace();
       } finally {
-
       }
     }
   }
